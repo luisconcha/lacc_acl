@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,7 +10,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
+        \Artisan::call( 'laccuser:make-permission' );
         $this->call( UsersTableSeeder::class );
     }
 }

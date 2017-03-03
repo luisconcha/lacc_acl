@@ -2,6 +2,13 @@
 namespace LaccUser\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\CachedReader;
+use Doctrine\Common\Annotations\Reader;
+use Doctrine\Common\Cache\FilesystemCache;
+use LaccUser\Annotations\PermissionReader;
+use LaccUser\Http\Controllers\UserController;
 
 class LaccUserServiceProvider extends ServiceProvider
 {
@@ -23,6 +30,9 @@ class LaccUserServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->publishMigrationsAndSeeders();
+        /** @var PermissionReader $reader */
+//        $reader = app( PermissionReader::class );
+//        dd($reader->getPermissions());
     }
 
     /**
@@ -34,6 +44,24 @@ class LaccUserServiceProvider extends ServiceProvider
     {
         $this->app->register( RouteServiceProvider::class );
         $this->app->register( RepositoryServiceProvider::class );
+        $this->registerAnnotations();
+        //Leitor de anotattions
+        $this->app->bind( Reader::class, function () {
+            return new CachedReader(
+              new AnnotationReader(),
+              new FilesystemCache( storage_path( 'framework/cache/doctrine-annotations' ) ),
+              $debug = env( 'APP_DEBUG' )
+            );
+        } );
+    }
+
+    /**
+     * Cria os autoload das annotations do doctrine
+     */
+    protected function registerAnnotations()
+    {
+        $loader = require __DIR__ . '/../../../vendor/autoload.php';
+        AnnotationRegistry::registerLoader( [ $loader, 'loadClass' ] );
     }
 
     /**
@@ -60,7 +88,6 @@ class LaccUserServiceProvider extends ServiceProvider
     {
         $viewPath   = base_path( 'resources/views/modules/laccuser' );
         $sourcePath = __DIR__ . '/../resources/views';
-        
         $this->publishes( [
           $sourcePath => $viewPath,
         ] );

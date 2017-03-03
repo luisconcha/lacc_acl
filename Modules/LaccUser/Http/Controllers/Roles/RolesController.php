@@ -17,7 +17,13 @@ use LACC\Http\Controllers\Controller;
 use LaccUser\Http\Requests\RoleRequest;
 use LaccUser\Repositories\RoleRepository;
 use LaccUser\Services\RoleService;
+use LaccUser\Annotations\Mapping as Permission;
 
+/**
+ * Class RolesController
+ * @package LaccUser\Http\Controllers\Roles
+ * @Permission\Controller(name="roles-admin", description="Manage user roles")
+ */
 class RolesController extends Controller
 {
     /**
@@ -42,6 +48,10 @@ class RolesController extends Controller
         $this->roleRepository = $roleRepository;
     }
 
+    /**
+     * @Permission\Action(name="list-roles", description="View list of user roles")
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index()
     {
         $roles = $this->roleRepository->paginate( 10 );

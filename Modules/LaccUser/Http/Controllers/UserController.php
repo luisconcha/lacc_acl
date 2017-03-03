@@ -9,7 +9,13 @@ use LaccUser\Http\Requests\UserRequest;
 use LaccUser\Repositories\RoleRepository;
 use LaccUser\Repositories\UserRepository;
 use LaccUser\Services\UserService;
+use LaccUser\Annotations\Mapping as Permission;
 
+/**
+ * Class UsersController
+ * @package LaccUser\Http\Controllers
+ * @Permission\Controller(name="users-admin", description="User administration")
+ */
 class UserController extends Controller
 {
     /**
@@ -54,8 +60,8 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     * @return Response
+     * @Permission\Action(name="list", description="View user list")
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
