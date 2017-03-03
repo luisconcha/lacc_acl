@@ -40,7 +40,7 @@
                                    class="btn btn-danger btn-outline btn-xs">
                                     <strong>Delete</strong>
                                 </a>
-                                <a href="#"
+                                <a href="{{route('laccuser.roles.permissions.edit',['id'=>$role->id])}}"
                                    class="btn btn-primary btn-outline btn-xs">
                                     <strong>Edit Permissions</strong>
                                 </a>

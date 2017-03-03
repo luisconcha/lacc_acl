@@ -73,8 +73,8 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Response
+     * @Permission\Action(name="create-users", description="Create users")
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
     {
@@ -84,6 +84,7 @@ class UserController extends Controller
 
     /**
      * @param UserRequest $request
+     * @Permission\Action(name="create-users", description="Create users")
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -108,6 +109,7 @@ class UserController extends Controller
 
     /**
      * @param $id
+     * @Permission\Action(name="update-users", description="Update users")
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -121,6 +123,7 @@ class UserController extends Controller
     /**
      * @param UserRequest $request
      * @param             $id
+     * @Permission\Action(name="update-users", description="Update users")
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -145,6 +148,7 @@ class UserController extends Controller
 
     /**
      * @param $id
+     * @Permission\Action(name="destroy-user", description="Destroy user data")
      *
      * @return \Illuminate\Http\RedirectResponse
      */

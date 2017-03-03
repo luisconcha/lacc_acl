@@ -11,14 +11,17 @@
  */
 namespace LaccUser\Http\Controllers\Roles;
 
-use Illuminate\Database\QueryException;
 use Illuminate\Database\Connection;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use LACC\Http\Controllers\Controller;
+use LaccUser\Annotations\Mapping as Permission;
 use LaccUser\Http\Requests\RoleRequest;
+use LaccUser\Repositories\PermissionRepository;
 use LaccUser\Repositories\RoleRepository;
 use LaccUser\Services\RoleService;
-use LaccUser\Annotations\Mapping as Permission;
+
+;
 
 /**
  * Class RolesController
@@ -42,13 +45,23 @@ class RolesController extends Controller
      */
     protected $roleRepository;
 
+    /**
+     * @var PermissionRepository
+     */
+    protected $permissionRepository;
+
     protected $with = [];
 
-    public function __construct( Connection $connection, RoleService $roleService, RoleRepository $roleRepository )
-    {
-        $this->bd             = $connection;
-        $this->roleService    = $roleService;
-        $this->roleRepository = $roleRepository;
+    public function __construct(
+      Connection $connection,
+      RoleService $roleService,
+      RoleRepository $roleRepository,
+      PermissionRepository $permissionRepository
+    ) {
+        $this->bd                   = $connection;
+        $this->roleService          = $roleService;
+        $this->roleRepository       = $roleRepository;
+        $this->permissionRepository = $permissionRepository;
     }
 
     /**
@@ -62,11 +75,21 @@ class RolesController extends Controller
         return view( 'laccuser::roles.index', compact( 'roles' ) );
     }
 
+    /**
+     * @Permission\Action(name="store-roles", description="Register user roles")
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function create()
     {
         return view( 'laccuser::roles.create' );
     }
 
+    /**
+     * @param RoleRequest $request
+     * @Permission\Action(name="store-roles", description="Register user roles")
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store( RoleRequest $request )
     {
         $data = $request->all();
@@ -77,17 +100,30 @@ class RolesController extends Controller
         return redirect()->route( 'laccuser.roles.index' );
     }
 
+    /**
+     * @param $id
+     * @Permission\Action(name="update-roles", description="Update user roles")
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit( $id )
     {
-        $role  = $this->roleService->verifiesTheExistenceOfObject( $this->roleRepository, $id, $this->with );
+        $role = $this->roleService->verifiesTheExistenceOfObject( $this->roleRepository, $id, $this->with );
 
         return view( 'laccuser::roles.edit', compact( 'role' ) );
     }
 
+    /**
+     * @param RoleRequest $request
+     * @param             $idRole
+     * @Permission\Action(name="update-roles", description="Update user roles")
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update( RoleRequest $request, $idRole )
     {
         $this->roleService->verifiesTheExistenceOfObject( $this->roleRepository, $idRole, $this->with );
-        $data = $request->all();
+        $data = $request->except( 'permissions' );
         $this->roleRepository->update( $data, $idRole );
         $request->session()->flash( 'message',
           [ 'type' => 'success', 'msg' => "Role '{$data['name']}' successfully updated!" ] );
@@ -95,6 +131,13 @@ class RolesController extends Controller
         return redirect()->route( 'laccuser.roles.index' );
     }
 
+    /**
+     * @param         $id
+     * @param Request $request
+     * @Permission\Action(name="destroy-roles", description="Delete user roles")
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function destroy( $id, Request $request )
     {
         try {
@@ -111,5 +154,4 @@ class RolesController extends Controller
 
         return redirect()->route( 'laccuser.roles.index' );
     }
-
 }
