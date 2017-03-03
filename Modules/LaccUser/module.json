@@ -1,0 +1,21 @@
+{
+  "name": "LaccUser",
+  "alias": "laccuser",
+  "description": "Module for user laravel",
+  "keywords": [],
+  "active": 1,
+  "order": 0,
+  "providers": [
+    "LaccUser\\Providers\\LaccUserServiceProvider"
+  ],
+  "aliases": {},
+  "files": [
+    "start.php"
+  ],
+  "requires": [],
+  "migration": {
+    "seeds": [
+      "UsersTableSeeder"
+    ]
+  }
+}
