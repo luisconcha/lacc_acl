@@ -1,5 +1,5 @@
 <?php
-Route::group( [ 'as' => 'laccuser.' ],
+Route::group( [ 'as' => 'laccuser.', 'middleware' => 'auth' ],
   function () {
       Route::group( [ 'prefix' => 'admin' ], function () {
           Route::resource( '/users', 'UserController', [ 'except' => [ 'show' ] ] );
