@@ -22,7 +22,7 @@ trait BaseRepositoryTrait
     public function lists( $column, $key = null )
     {
         $this->applyCriteria();
-        $result = [ '' => '-- select --' ];
+        $result = [ '0' => '-- select --' ];
         $result += $this->model->pluck( $column, $key )->all();
 
         return $result;

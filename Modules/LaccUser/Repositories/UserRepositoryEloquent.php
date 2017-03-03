@@ -25,6 +25,16 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         return User::class;
     }
 
+    public function update( array $attributes, $id )
+    {
+        $user = parent::update( $attributes, $id );
+        if ( isset( $attributes[ 'roles' ] ) && empty( !$attributes[ 'roles' ][ 0 ] ) ) {
+            $user->roles()->sync( $attributes[ 'roles' ] );
+        }
+
+        return true;
+    }
+
     /**
      * Boot up the repository, pushing criteria
      */

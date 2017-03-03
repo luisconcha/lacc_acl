@@ -94,10 +94,6 @@ class RolesController extends Controller
 
     public function destroy( $id, Request $request )
     {
-        //        $this->roleRepository->delete( $id );
-        //        $request->session()->flash( 'message', [ 'type' => 'success', 'msg' => 'Role deleted successfully!' ] );
-        //
-        //        return redirect()->route( 'laccuser.roles.index' );
         try {
             $this->roleRepository->delete( $id );
             $request->session()->flash( 'message', [ 'type' => 'success', 'msg' => 'Role deleted successfully!' ] );

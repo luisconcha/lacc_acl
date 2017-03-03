@@ -32,11 +32,10 @@ class RoleRepositoryEloquent extends BaseRepository implements RoleRepository
      *
      * @return \Illuminate\Support\Collection
      */
-    public function listsWithMutators( $column, $key = null )
+    public function listsWithMutators($column, $key = null)
     {
         /** @var  Collection $collection */
         $collection = $this->all();
-
         return $collection->pluck( $column, $key );
     }
 

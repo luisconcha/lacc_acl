@@ -129,15 +129,11 @@ class UserController extends Controller
     {
         try {
             $this->bd->beginTransaction();
-            $data = $request->all();
-            $user = $this->userRepository->update( $data, $id );
-            if ( isset( $data[ 'roles' ] ) && empty( !$data[ 'roles' ][ 0 ] ) ) {
-                $user->roles()->sync( $data[ 'roles' ] );
-            }
+            $data = $request->except( [ 'password' ] );
+            $this->userRepository->update( $data, $id );
             $this->bd->commit();
             $request->session()->flash( 'message',
               [ 'type' => 'success', 'msg' => "User '{$data['name']}' successfully updated!" ] );
-
         } catch ( \Exception $e ) {
             $this->bd->rollBack();
             $request->session()->flash( 'error',

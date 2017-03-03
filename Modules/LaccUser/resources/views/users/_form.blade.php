@@ -25,13 +25,19 @@
     </div>
 </div>
 
-<div class="panel panel-danger">
-    <div class="panel-heading"><h3 class="panel-title">User role data</h3></div>
-    <div class="panel-body">
-        <div class="form-group {{ $errors->first('roles')? ' has-error':'' }}">
-            {!! Form::label('roles[]','Roles', ['class' => 'control-label']) !!}
-            {!! Form::select('roles[]', $roles,null, ['class'=>'form-control', 'multiple' => true])!!}
-        </div>
-    </div>
+<div class="form-group {{ $errors->first('roles')? ' has-error':'' }}">
+    {!! Form::label('roles','Roles', ['class' => 'control-label']) !!}
+    {!! Form::select('roles[]', $roles,null, ['class'=>'form-control', 'multiple' => true]) !!}
 </div>
+
+
+{{--<div class="panel panel-danger">--}}
+    {{--<div class="panel-heading"><h3 class="panel-title">User role data</h3></div>--}}
+    {{--<div class="panel-body">--}}
+        {{--<div class="form-group {{ $errors->first('roles')? ' has-error':'' }}">--}}
+            {{--{!! Form::label('roles','Roles', ['class' => 'control-label']) !!}--}}
+            {{--{!! Form::select('roles[]', $roles,null, ['class'=>'form-control', 'multiple' => true])!!}--}}
+        {{--</div>--}}
+    {{--</div>--}}
+{{--</div>--}}
 

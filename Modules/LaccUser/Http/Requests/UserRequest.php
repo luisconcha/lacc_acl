@@ -28,6 +28,7 @@ class UserRequest extends FormRequest
           'name'    => "required|max:150|unique:users,name,$idUser",
           'email'   => "required|email|unique:users,email,$idUser",
           'num_cpf' => "required|unique:users,num_cpf,$idUser",
+          'roles.*' => 'exists:roles,id'
         ];
     }
 }
