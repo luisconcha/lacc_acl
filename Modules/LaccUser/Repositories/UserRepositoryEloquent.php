@@ -25,6 +25,16 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         return User::class;
     }
 
+    public function create( array $attributes )
+    {
+        $user = parent::create( $attributes );
+        if ( isset( $attributes[ 'roles' ] ) ) {
+            $user->roles()->sync( $attributes[ 'roles' ] );
+        }
+
+        return $user;
+    }
+
     public function update( array $attributes, $id )
     {
         $user = parent::update( $attributes, $id );
@@ -32,7 +42,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             $user->roles()->sync( $attributes[ 'roles' ] );
         }
 
-        return true;
+        return $user;
     }
 
     /**

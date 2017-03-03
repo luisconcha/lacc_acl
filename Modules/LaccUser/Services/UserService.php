@@ -11,7 +11,7 @@
  */
 namespace LaccUser\Services;
 
-class UserService
+class UserService extends BaseService
 {
 
     public function setEncryptPassword( $password )

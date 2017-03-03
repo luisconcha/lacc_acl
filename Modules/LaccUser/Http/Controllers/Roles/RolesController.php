@@ -42,6 +42,8 @@ class RolesController extends Controller
      */
     protected $roleRepository;
 
+    protected $with = [];
+
     public function __construct( Connection $connection, RoleService $roleService, RoleRepository $roleRepository )
     {
         $this->bd             = $connection;
@@ -77,13 +79,14 @@ class RolesController extends Controller
 
     public function edit( $id )
     {
-        $role = $this->roleRepository->find( $id );
+        $role  = $this->roleService->verifiesTheExistenceOfObject( $this->roleRepository, $id, $this->with );
 
         return view( 'laccuser::roles.edit', compact( 'role' ) );
     }
 
     public function update( RoleRequest $request, $idRole )
     {
+        $this->roleService->verifiesTheExistenceOfObject( $this->roleRepository, $idRole, $this->with );
         $data = $request->all();
         $this->roleRepository->update( $data, $idRole );
         $request->session()->flash( 'message',
@@ -95,6 +98,7 @@ class RolesController extends Controller
     public function destroy( $id, Request $request )
     {
         try {
+            $this->roleService->verifiesTheExistenceOfObject( $this->roleRepository, $id, $this->with );
             $this->roleRepository->delete( $id );
             $request->session()->flash( 'message', [ 'type' => 'success', 'msg' => 'Role deleted successfully!' ] );
         } catch ( QueryException $ex ) {

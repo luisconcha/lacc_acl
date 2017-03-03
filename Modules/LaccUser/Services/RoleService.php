@@ -13,7 +13,7 @@ namespace LaccUser\Services;
 
 use LaccUser\Models\Role;
 
-class RoleService
+class RoleService extends BaseService
 {
     /**
      * @var Role

@@ -45,6 +45,8 @@ class UserController extends Controller
 
     protected $urlTo = 'laccuser.users.index';
 
+    protected $with = [];
+
     public function __construct(
       Connection $connection,
       UserRepository $userRepository,
@@ -91,10 +93,7 @@ class UserController extends Controller
             $this->bd->beginTransaction();
             $data               = $request->all();
             $data[ 'password' ] = $this->userService->setEncryptPassword( '123456' );
-            $user               = $this->userRepository->create( $data );
-            if ( !empty( $data[ 'roles' ][ 0 ] ) ) {
-                $user->roles()->sync( $data[ 'roles' ] );
-            }
+            $this->userRepository->create( $data );
             $this->bd->commit();
             $request->session()->flash( 'message',
               [ 'type' => 'success', 'msg' => "User '{$data['name']}' successfully registered!" ] );
@@ -114,7 +113,7 @@ class UserController extends Controller
      */
     public function edit( $id )
     {
-        $user  = $this->userRepository->find( $id );
+        $user  = $this->userService->verifiesTheExistenceOfObject( $this->userRepository, $id, $this->with );
         $roles = $this->roleRepository->lists( 'name', 'id' );// @see trait BaseRepositoryTrait
         return view( 'laccuser::users.edit', compact( 'user', 'roles' ) );
     }
@@ -127,6 +126,7 @@ class UserController extends Controller
      */
     public function update( UserRequest $request, $id )
     {
+        $this->userService->verifiesTheExistenceOfObject( $this->userRepository, $id, $this->with );
         try {
             $this->bd->beginTransaction();
             $data = $request->except( [ 'password' ] );
@@ -150,6 +150,7 @@ class UserController extends Controller
      */
     public function destroy( $id )
     {
+        $this->userService->verifiesTheExistenceOfObject( $this->userRepository, $id, $this->with );
         $this->userRepository->delete( $id );
         $this->request->session()->flash( 'message',
           [ 'type' => 'success', 'msg' => "User successfully deleted!" ] );
