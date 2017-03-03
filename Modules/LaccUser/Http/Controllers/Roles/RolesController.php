@@ -11,6 +11,7 @@
  */
 namespace LaccUser\Http\Controllers\Roles;
 
+use Illuminate\Database\QueryException;
 use Illuminate\Database\Connection;
 use Illuminate\Http\Request;
 use LACC\Http\Controllers\Controller;
@@ -93,8 +94,20 @@ class RolesController extends Controller
 
     public function destroy( $id, Request $request )
     {
-        $this->roleRepository->delete( $id );
-        $request->session()->flash( 'message', [ 'type' => 'success', 'msg' => 'Role deleted successfully!' ] );
+        //        $this->roleRepository->delete( $id );
+        //        $request->session()->flash( 'message', [ 'type' => 'success', 'msg' => 'Role deleted successfully!' ] );
+        //
+        //        return redirect()->route( 'laccuser.roles.index' );
+        try {
+            $this->roleRepository->delete( $id );
+            $request->session()->flash( 'message', [ 'type' => 'success', 'msg' => 'Role deleted successfully!' ] );
+        } catch ( QueryException $ex ) {
+            $request->session()->flash( 'error',
+              [
+                'type' => 'danger',
+                'msg'  => 'The user role can not be deleted. It is related to other records.',
+              ] );
+        }
 
         return redirect()->route( 'laccuser.roles.index' );
     }

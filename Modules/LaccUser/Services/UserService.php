@@ -23,4 +23,24 @@ class UserService
     {
         return str_random( 10 );
     }
+
+    /**
+     * Prepara campo de role para adicionar cor de fundo quando existe role na listagem de usuários
+     *
+     * @param $users
+     *
+     * @return mixed
+     */
+    public function prepareListRoles( $users )
+    {
+        foreach ( $users as $user ) {
+            if ( $user->roles ) {
+                foreach ( $user->roles as $role ) {
+                    $role->name = "<span class='label' style='background-color: $role->cor'>" . $role->name . "</span>";
+                }
+            }
+        }
+
+        return $users;
+    }
 }

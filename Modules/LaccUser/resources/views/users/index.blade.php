@@ -28,7 +28,7 @@
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>------</td>
+                        <td>{!! $user->roles->implode('name',' | ') !!}</td>
                         <td>
                             <a href="{{route('laccuser.users.edit',['id'=>$user->id])}}"
                                class="btn btn-warning btn-outline btn-xs">

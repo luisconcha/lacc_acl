@@ -102,7 +102,7 @@
         <div class="alert alert-{{ Session::get("message.type") }} alert-dismissible fade in" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
-            <p>The publisher reports:</p>
+            <p>Success:</p>
             <p><strong>{{Session::get("message.msg")}}</strong></p>
         </div>
     @endif
@@ -111,7 +111,7 @@
         <div class="alert alert-{{ Session::get("error.type") }} alert-dismissible fade in" role="alert">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                         aria-hidden="true">×</span></button>
-            <p>The publisher reports:</p>
+            <p>Oops! There was an error:</p>
             <p><strong>{{Session::get("error.msg")}}</strong></p>
         </div>
     @endif
