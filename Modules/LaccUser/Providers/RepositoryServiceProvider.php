@@ -33,6 +33,10 @@ class RepositoryServiceProvider extends ServiceProvider
           \LaccUser\Repositories\UserRepository::class,
           \LaccUser\Repositories\UserRepositoryEloquent::class
         );
+        $this->app->bind(
+          \LaccUser\Repositories\RoleRepository::class,
+          \LaccUser\Repositories\RoleRepositoryEloquent::class
+        );
     }
 
     /**

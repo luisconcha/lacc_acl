@@ -2,9 +2,11 @@
 namespace LaccUser\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Database\Connection;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
 use LaccUser\Http\Requests\UserRequest;
+use LaccUser\Repositories\RoleRepository;
 use LaccUser\Repositories\UserRepository;
 use LaccUser\Services\UserService;
 
@@ -21,16 +23,33 @@ class UserController extends Controller
     protected $userService;
 
     /**
+     * @var  RoleRepository
+     */
+    protected $roleRepository;
+
+    /**
+     * @var Connection
+     */
+    protected $bd;
+
+    /**
      * @var Request
      */
     protected $request;
 
     protected $urlTo = 'laccuser.users.index';
 
-    public function __construct( UserRepository $userRepository, UserService $userService, Request $request )
-    {
+    public function __construct(
+      Connection $connection,
+      UserRepository $userRepository,
+      UserService $userService,
+      RoleRepository $roleRepository,
+      Request $request
+    ) {
+        $this->bd             = $connection;
         $this->userRepository = $userRepository;
         $this->userService    = $userService;
+        $this->roleRepository = $roleRepository;
         $this->request        = $request;
     }
 
@@ -51,7 +70,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view( 'laccuser::users.create' );
+        $roles = $this->roleRepository->lists( 'name', 'id' );// @see trait BaseRepositoryTrait
+        return view( 'laccuser::users.create', compact( 'roles' ) );
     }
 
     /**
@@ -61,11 +81,22 @@ class UserController extends Controller
      */
     public function store( UserRequest $request )
     {
-        $data               = $request->all();
-        $data[ 'password' ] = $this->userService->setEncryptPassword( '123456' );
-        $this->userRepository->create( $data );
-        $request->session()->flash( 'message',
-          [ 'type' => 'success', 'msg' => "User '{$data['name']}' successfully registered!" ] );
+        try {
+            $this->bd->beginTransaction();
+            $data               = $request->all();
+            $data[ 'password' ] = $this->userService->setEncryptPassword( '123456' );
+            $user               = $this->userRepository->create( $data );
+            if ( !empty( $data[ 'roles' ][ 0 ] ) ) {
+                $user->roles()->sync( $data[ 'roles' ] );
+            }
+            $this->bd->commit();
+            $request->session()->flash( 'message',
+              [ 'type' => 'success', 'msg' => "User '{$data['name']}' successfully registered!" ] );
+        } catch ( \Exception $e ) {
+            $this->bd->rollBack();
+            $request->session()->flash( 'error',
+              [ 'type' => 'danger', 'msg' => 'There was an error in the request, please try again later.' ] );
+        }
 
         return redirect()->route( $this->urlTo );
     }
@@ -77,9 +108,9 @@ class UserController extends Controller
      */
     public function edit( $id )
     {
-        $user = $this->userRepository->find( $id );
-
-        return view( 'laccuser::users.edit', compact( 'user' ) );
+        $user  = $this->userRepository->find( $id );
+        $roles = $this->roleRepository->lists( 'name', 'id' );// @see trait BaseRepositoryTrait
+        return view( 'laccuser::users.edit', compact( 'user', 'roles' ) );
     }
 
     /**
@@ -90,10 +121,22 @@ class UserController extends Controller
      */
     public function update( UserRequest $request, $id )
     {
-        $data = $request->all();
-        $this->userRepository->update( $data, $id );
-        $request->session()->flash( 'message',
-          [ 'type' => 'success', 'msg' => "User '{$data['name']}' successfully updated!" ] );
+        try {
+            $this->bd->beginTransaction();
+            $data = $request->all();
+            $user = $this->userRepository->update( $data, $id );
+            if ( isset( $data[ 'roles' ] ) && empty( !$data[ 'roles' ][ 0 ] ) ) {
+                $user->roles()->sync( $data[ 'roles' ] );
+            }
+            $this->bd->commit();
+            $request->session()->flash( 'message',
+              [ 'type' => 'success', 'msg' => "User '{$data['name']}' successfully updated!" ] );
+
+        } catch ( \Exception $e ) {
+            $this->bd->rollBack();
+            $request->session()->flash( 'error',
+              [ 'type' => 'danger', 'msg' => 'There was an error in the request, please try again later!' ] );
+        }
 
         return redirect()->route( $this->urlTo );
     }
