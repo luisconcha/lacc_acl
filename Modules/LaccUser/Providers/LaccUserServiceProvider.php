@@ -22,6 +22,7 @@ class LaccUserServiceProvider extends ServiceProvider
         $this->registerTranslations();
         $this->registerConfig();
         $this->registerViews();
+        $this->publishMigrationsAndSeeders();
     }
 
     /**
@@ -32,6 +33,7 @@ class LaccUserServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register( RouteServiceProvider::class );
+        $this->app->register( RepositoryServiceProvider::class );
     }
 
     /**
@@ -58,6 +60,7 @@ class LaccUserServiceProvider extends ServiceProvider
     {
         $viewPath   = base_path( 'resources/views/modules/laccuser' );
         $sourcePath = __DIR__ . '/../resources/views';
+        
         $this->publishes( [
           $sourcePath => $viewPath,
         ] );
@@ -79,6 +82,21 @@ class LaccUserServiceProvider extends ServiceProvider
         } else {
             $this->loadTranslationsFrom( __DIR__ . '/../resources/lang', 'laccuser' );
         }
+    }
+
+    /**
+     * Register migrations and seed
+     */
+    public function publishMigrationsAndSeeders()
+    {
+        $sourcePathMigrations = __DIR__ . '/../database/migrations';
+        $sourcePathSeeders    = __DIR__ . '/../database/seeders';
+        $this->publishes( [
+          $sourcePathMigrations => database_path( 'migrations' ),
+        ], 'migrations' );
+        $this->publishes( [
+          $sourcePathSeeders => database_path( 'seeds' ),
+        ], 'seeders' );
     }
 
     /**
