@@ -45,7 +45,7 @@ class UserController extends Controller
 
     protected $urlTo = 'laccuser.users.index';
 
-    protected $with = [];
+    protected $with = [ 'roles' ];
 
     public function __construct(
       Connection $connection,
@@ -67,8 +67,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->userService->prepareListRoles( $this->userRepository->paginate( 10 ) );
-
+        $users = $this->userService->prepareListRoles( $this->userRepository->with( $this->with )->paginate( 10 ) );
+        dd($users[0]->roles());
         return view( 'laccuser::users.index', compact( 'users' ) );
     }
 

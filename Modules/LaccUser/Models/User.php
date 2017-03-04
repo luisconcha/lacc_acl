@@ -28,4 +28,23 @@ class User extends Authenticable
     {
         return $this->belongsToMany( Role::class );
     }
+
+    /**
+     * @param $role
+     * Collection / String
+     *
+     * @return boolean
+     */
+    public function hasRole( $role )
+    {
+        return is_string( $role ) ?
+          $this->roles->contains( 'name', $role ) :
+          (boolean)$role->intersect( $this->roles )->count();
+    }
+
+    public function isAdmin()
+    {
+        return $this->hasRole( config( 'laccuser.acl.role_admin' ) );
+    }
+
 }

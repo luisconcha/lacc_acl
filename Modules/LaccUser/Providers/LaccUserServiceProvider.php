@@ -7,6 +7,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Cache\FilesystemCache;
+
 use LaccUser\Annotations\PermissionReader;
 use LaccUser\Http\Controllers\UserController;
 
@@ -30,9 +31,6 @@ class LaccUserServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->publishMigrationsAndSeeders();
-        /** @var PermissionReader $reader */
-//        $reader = app( PermissionReader::class );
-//        dd($reader->getPermissions());
     }
 
     /**
@@ -44,6 +42,7 @@ class LaccUserServiceProvider extends ServiceProvider
     {
         $this->app->register( RouteServiceProvider::class );
         $this->app->register( RepositoryServiceProvider::class );
+        $this->app->register( AuthServiceProvider::class );
         $this->registerAnnotations();
         //Leitor de anotattions
         $this->app->bind( Reader::class, function () {
