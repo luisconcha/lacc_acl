@@ -32,8 +32,7 @@ class AuthServiceProvider extends ServiceProvider
          * //if retorna void - executa a habilidade em questão
          */
         \Gate::before( function ( $user, $ability ) {
-            dump( $user );
-            dd( $user->roles() );
+
             if ( $user->isAdmin() ) {
                 return true;
             }

@@ -31,6 +31,6 @@ class UsersTableSeeder extends Seeder
         );
 
 
-        factory(\LaccUser\Models\User::class, 5)->create();
+        //factory(\LaccUser\Models\User::class, 5)->create();
     }
 }
