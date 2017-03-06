@@ -10,24 +10,14 @@
 |
 */
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define( \LaccUser\Models\User::class, function ( Faker\Generator $faker ) {
-    static $password;
-    return [
-      'name'           => 'Luis Alberto Concha Curay',
-      'email'          => 'luvett11@gmail.com',
-      'password'       => $password ? : $password = bcrypt( '123456' ),
-      'num_cpf'        => '12345678955',
-      'remember_token' => str_random( 100 ),
-    ];
-} );
 
-$factory->define( \LaccUser\Models\User::class, function ( Faker\Generator $faker ) {
+$factory->define(\LaccUser\Models\User::class, function (Faker\Generator $faker) {
     static $password;
     return [
-      'name'           => 'Visitant',
-      'email'          => 'visitant@gmail.com',
-      'password'       => $password ? : $password = bcrypt( '123456' ),
-      'num_cpf'        => '55545678955',
-      'remember_token' => str_random( 100 ),
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('123456'),
+        'num_cpf' => $faker->numberBetween(1, 9),
+        'remember_token' => str_random(100),
     ];
-} );
+});
