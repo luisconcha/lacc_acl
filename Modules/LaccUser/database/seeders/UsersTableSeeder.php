@@ -10,6 +10,6 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory( \LaccUser\Models\User::class, 1 )->create();
+        //factory( \LaccUser\Models\User::class, 1 )->create();
     }
 }
