@@ -30,9 +30,9 @@ return [
     ],
 
     'stripe' => [
-        'model' => LACC\User::class,
-        'key' => env('STRIPE_KEY'),
-        'secret' => env('STRIPE_SECRET'),
+      'model' => \LaccUser\Models\User::class,
+      'key' => env('STRIPE_KEY'),
+      'secret' => env('STRIPE_SECRET'),
     ],
 
 ];

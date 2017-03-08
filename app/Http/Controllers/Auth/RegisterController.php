@@ -2,7 +2,7 @@
 
 namespace LACC\Http\Controllers\Auth;
 
-use LACC\User;
+use LaccUser\Models\User;
 use LACC\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;

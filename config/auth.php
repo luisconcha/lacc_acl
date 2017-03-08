@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => LACC\User::class,
+            'model' => \LaccUser\Models\User::class,
         ],
 
         // 'users' => [

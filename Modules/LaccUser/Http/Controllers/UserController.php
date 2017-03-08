@@ -68,7 +68,6 @@ class UserController extends Controller
     public function index()
     {
         $users = $this->userService->prepareListRoles( $this->userRepository->with( $this->with )->paginate( 10 ) );
-        dd($users[0]->roles());
         return view( 'laccuser::users.index', compact( 'users' ) );
     }
 
