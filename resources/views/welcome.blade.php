@@ -77,17 +77,22 @@
                 </div>
             @endif
 
-            <div class="content">
+            <div class="container">
                 <div class="title m-b-md">
-                    Laravel
+                    Laravel com ACL e annotations
                 </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h3>User Admin</h3>
+                        <p><strong>Login: </strong> superadmin@gmail.com</p>
+                        <p><strong>Password: </strong> 123456</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h3>User Visitant</h3>
+                        <p><strong>Login: </strong> visitant@gmail.com</p>
+                        <p><strong>Password: </strong> 123456</p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -59,7 +59,11 @@
                                 <ul class="nav navbar-nav">
                                     <li><a href="/home">Home</a></li>
                                     <li><a href="{{ route('laccuser.users.index') }}">Users</a></li>
-                                    <li><a href="{{ route('laccuser.roles.index') }}">Roles</a></li>
+
+                                    @can('roles-admin/list-roles')
+                                        <li><a href="{{ route('laccuser.roles.index') }}">Roles</a></li>
+                                    @endcan
+                                    
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right">
                                     <!-- Authentication Links -->

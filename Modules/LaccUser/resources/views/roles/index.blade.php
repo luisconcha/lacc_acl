@@ -26,26 +26,27 @@
                         }}</span></td>
                         <td>{{ $role->description }}</td>
                         <td>
-                            <a href="{{route('laccuser.roles.edit',['id'=>$role->id])}}"
-                               class="btn btn-warning btn-outline btn-xs">
-                                <strong>Edit</strong>
-                            </a>
-                            @if( $role->name == config( 'laccuser.acl.role_admin' ))
-                                <a href="#"
-                                   class="btn btn-default btn-outline btn-xs disabled">
-                                    <strong>You can not delete the default system role</strong>
+                            @can('users-admin')
+                                <a href="{{route('laccuser.roles.edit',['id'=>$role->id])}}"
+                                   class="btn btn-warning btn-outline btn-xs">
+                                    <strong>Edit</strong>
                                 </a>
-                            @else
-                                <a href="{{route('laccuser.roles.destroy',['id'=>$role->id])}}"
-                                   class="btn btn-danger btn-outline btn-xs">
-                                    <strong>Delete</strong>
-                                </a>
-                                <a href="{{route('laccuser.roles.permissions.edit',['id'=>$role->id])}}"
-                                   class="btn btn-primary btn-outline btn-xs">
-                                    <strong>Edit Permissions</strong>
-                                </a>
-                            @endif
-
+                                @if( $role->name == config( 'laccuser.acl.role_admin' ))
+                                    <a href="#"
+                                       class="btn btn-default btn-outline btn-xs disabled">
+                                        <strong>You can not delete the default system role</strong>
+                                    </a>
+                                @else
+                                    <a href="{{route('laccuser.roles.destroy',['id'=>$role->id])}}"
+                                       class="btn btn-danger btn-outline btn-xs">
+                                        <strong>Delete</strong>
+                                    </a>
+                                    <a href="{{route('laccuser.roles.permissions.edit',['id'=>$role->id])}}"
+                                       class="btn btn-primary btn-outline btn-xs">
+                                        <strong>Edit Permissions</strong>
+                                    </a>
+                                @endif
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

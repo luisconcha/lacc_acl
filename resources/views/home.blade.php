@@ -8,7 +8,10 @@
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">
-                    You are logged in!
+                    <ul>
+                        <li><a href="{{ route('laccuser.users.index') }}">Users</a></li>
+                        <li><a href="{{ route('laccuser.roles.index') }}">Roles</a></li>
+                    </ul>
                 </div>
             </div>
         </div>

@@ -29,6 +29,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{!! $user->roles->implode('name',' | ') !!}</td>
+
                         <td>
                             <a href="{{route('laccuser.users.edit',['id'=>$user->id])}}"
                                class="btn btn-warning btn-outline btn-xs">
@@ -39,7 +40,7 @@
                                 <strong>Delete</strong>
                             </a>
                         </td>
-
+                        
                     </tr>
                 @empty
                     <tr class="text-center">
