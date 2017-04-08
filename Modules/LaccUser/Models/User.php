@@ -1,5 +1,4 @@
 <?php
-
 //namespace LaccUser\Models;
 //
 //use Illuminate\Notifications\Notifiable;
@@ -27,7 +26,6 @@
 //        'password', 'remember_token',
 //    ];
 //}
-
 namespace LaccUser\Models;
 
 use Collective\Html\Eloquent\FormAccessible;
@@ -74,6 +72,11 @@ class User extends Authenticable
     public function isAdmin()
     {
         return $this->hasRole( config( 'laccuser.acl.role_admin' ) );
+    }
+
+    public function formRolesAttribute()
+    {
+        return $this->roles->pluck( 'id' )->all();
     }
 
 }
